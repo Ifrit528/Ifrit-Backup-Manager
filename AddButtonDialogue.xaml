@@ -8,6 +8,8 @@
         Title="Select Source and Destination" Height="Auto" MaxHeight="250" Width="1000">
     <Grid>
         <StackPanel>
+            <TextBlock Text="Name" FontWeight="Bold"/>
+            <TextBox Name="NameBox" Width="900" Height="30" TextWrapping="NoWrap" HorizontalAlignment="Left"/>
             <TextBlock Text="Source" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal">
                 <TextBox Name="SourceResponseBox" Width="900" TextWrapping="NoWrap"/>

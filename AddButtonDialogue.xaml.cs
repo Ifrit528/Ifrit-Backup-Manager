@@ -19,6 +19,7 @@ namespace Backup_Manager
     {
         string sourcePath;
         string destinationPath;
+        string nameText;
 
         public AddButtonDialogue()
         {
@@ -53,9 +54,10 @@ namespace Backup_Manager
         {
             sourcePath = this.SourceResponseBox.Text;
             destinationPath = this.DestinationResponseBox.Text;
+            nameText = this.NameBox.Text;
 
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-            MainWindow.SaveObject saveObject = new MainWindow.SaveObject(sourcePath, destinationPath);
+            MainWindow.SaveObject saveObject = new MainWindow.SaveObject(sourcePath, destinationPath, nameText);
             mainWindow.PathList.Add(saveObject);
 
             await MainWindow.Serializer.SaveToFile();

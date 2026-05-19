@@ -34,24 +34,27 @@ namespace Backup_Manager
 
         public class SaveObject
         {
-            public SaveObject(string source, string destination)
+            public SaveObject(string source, string destination, string name)
             {
                 Source = source;
                 Destination = destination;
+                Name = name;
             }
 
             public string Source { get; set; }
             public string Destination { get; set; }
+            public string Name { get; set; }
 
             public string GetTime
             {
                 get
                 {
-                    return System.DateTime.Now.ToString("d");
+                    return System.DateTime.Now.ToString("g");
                 }
             }
         }
 
+        // File saving and reading
         public static class Serializer
         {
             public static async Task SaveToFile()
@@ -66,11 +69,41 @@ namespace Backup_Manager
                 if (File.Exists(fileName))
                 {
                     using FileStream openStream = File.OpenRead(fileName);
-                    ObservableCollection<SaveObject> saveObject = await JsonSerializer.DeserializeAsync<ObservableCollection<SaveObject>>(openStream);
-                    foreach (SaveObject obj in saveObject)
+                    if (openStream != null && openStream.Length != 0)
                     {
-                        currentWindow.pathList.Add(obj);
+                        ObservableCollection<SaveObject> saveObject = await JsonSerializer.DeserializeAsync<ObservableCollection<SaveObject>>(openStream);
+                        foreach (SaveObject obj in saveObject)
+                        {
+                            currentWindow.PathList.Add(obj);
+                        }
                     }
+                }
+            }
+
+        }
+
+        static void CopyDirectory(string source, string destination, bool recursive=true)
+        {
+            var sourceDir = new DirectoryInfo(source);
+            var destinationDir = new DirectoryInfo(destination);
+
+            if (!sourceDir.Exists) { throw new DirectoryNotFoundException($"Source directory not found: {sourceDir.FullName}"); }
+            if (!destinationDir.Exists) { Directory.CreateDirectory(destinationDir.FullName); }
+
+            DirectoryInfo[] recursiveDirectories = sourceDir.GetDirectories();
+
+            foreach (FileInfo file in sourceDir.GetFiles())
+            {
+                string destinationPath = Path.Combine(destination, file.Name);
+                file.CopyTo(destinationPath, true);
+            }
+
+            if (recursive)
+            {
+                foreach (DirectoryInfo subDirectory in recursiveDirectories)
+                {
+                    string newDirectory = Path.Combine(destination, subDirectory.Name);
+                    CopyDirectory(subDirectory.FullName, newDirectory);
                 }
             }
         }
@@ -79,7 +112,8 @@ namespace Backup_Manager
         {
             Button button = (Button)sender;
             SaveObject saveObject = (SaveObject)button.DataContext;
-            MessageBox.Show($"{saveObject.Source}, {saveObject.Destination}");
+
+            CopyDirectory(saveObject.Source, saveObject.Destination);
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -89,20 +123,20 @@ namespace Backup_Manager
             selectionWindow.Show();
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private async void Delete_Click(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
-            ListView listView = this.ListView1;
-            SaveObject selectedItem = (SaveObject)listView.SelectedItem;
-
-            if (listView.SelectedItem != null)
+            var items = this.ListView1.SelectedItems;
+            if (items.Count > 0)
             {
-                MessageBox.Show(selectedItem.Source);
-            } else
-            {
-                MessageBox.Show("Nothing is selected.");
+                for (int i = this.PathList.Count - 1; i >= 0; i--)
+                {
+                    if (items.Contains(PathList[i]))
+                    {
+                        this.PathList.RemoveAt(i);
+                    }
+                }
+                await Serializer.SaveToFile();
             }
         }
-
     }
 }
