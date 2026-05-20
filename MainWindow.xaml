@@ -8,18 +8,17 @@
         Title="Backup Manager" Height="450" Width="1000">
 
     <Window.Resources>
-        <DataTemplate x:Key="ListItemTemplate">
-            <StackPanel Orientation="Horizontal">
-                <Button Grid.Column="0" Margin="30" VerticalAlignment="Center" Content="Button" Click="List_Button_Click"></Button>
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="NoWrap" Text="{Binding Name}"/>
-                <TextBlock Grid.Column="2" VerticalAlignment="Center" TextWrapping="NoWrap" Text="{Binding Source}"/>
-                <TextBlock Grid.Column="3" VerticalAlignment="Center" TextWrapping="NoWrap" Text="{Binding Destination}"/>
-                <TextBlock Grid.Column="4" VerticalAlignment="Center" TextWrapping="NoWrap" Text="{Binding GetTime}"/>
-            </StackPanel>
-        </DataTemplate>
 
         <DataTemplate x:Key="ListButton">
             <Button Content="Backup" Background="Green" Click="List_Button_Click" Margin="-10,0,0,0"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SourceCell">
+            <TextBlock Width="300" MouseLeftButtonUp="Source_Click" Text="{Binding Source}"/>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="DestinationCell">
+            <TextBlock Width="300" MouseLeftButtonUp="Destination_Click" Text="{Binding Destination}"/>
         </DataTemplate>
 
         <Style x:Key="HeaderStyle" TargetType="GridViewColumnHeader">
@@ -49,8 +48,8 @@
                     <GridView.Columns>
                         <GridViewColumn Header="" Width="Auto" CellTemplate="{StaticResource ListButton}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
                         <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
-                        <GridViewColumn Header="Source" DisplayMemberBinding="{Binding Source}" Width="300" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
-                        <GridViewColumn Header="Destination" DisplayMemberBinding="{Binding Destination}" Width="300" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
+                        <GridViewColumn Header="Source" CellTemplate="{StaticResource SourceCell}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
+                        <GridViewColumn Header="Destination" CellTemplate="{StaticResource DestinationCell}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
                         <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding GetTime}" Width="Auto" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
                     </GridView.Columns>
                 </GridView>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
@@ -179,6 +180,18 @@ namespace Backup_Manager
                 }
                 await Serializer.SaveToFile();
             }
+        }
+
+        private void Source_Click(object sender, RoutedEventArgs e)
+        {
+            TextBlock sourceBlock = (TextBlock)sender;
+            if (Directory.Exists(sourceBlock.Text)) { Process.Start("explorer.exe", sourceBlock.Text); }
+        }
+
+        private void Destination_Click(object sender, RoutedEventArgs e)
+        {
+            TextBlock destinationBlock = (TextBlock)sender;
+            if (Directory.Exists(destinationBlock.Text)) { Process.Start("explorer.exe", destinationBlock.Text); }
         }
     }
 }
