@@ -11,6 +11,7 @@ namespace Backup_Manager
         string sourcePath;
         string destinationPath;
         string nameText;
+        string numberOfBackups;
 
         public AddButtonDialogue()
         {
@@ -46,9 +47,26 @@ namespace Backup_Manager
             sourcePath = this.SourceResponseBox.Text;
             destinationPath = this.DestinationResponseBox.Text;
             nameText = this.NameBox.Text;
+            numberOfBackups = this.NumberOfBackups.Text;
+
+            if (numberOfBackups.Trim() == "") { numberOfBackups = "3"; }
+
+            foreach (char character in numberOfBackups)
+            {
+                if (!Char.IsNumber(character))
+                {
+                    MessageBox.Show("Please input a number.");
+                    return;
+                }
+                if (Convert.ToInt32(character) == 0)
+                {
+                    MessageBox.Show("Please input a number greater than zero.");
+                    return;
+                }
+            }
 
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-            MainWindow.SaveObject saveObject = new MainWindow.SaveObject(sourcePath, destinationPath, nameText);
+            MainWindow.SaveObject saveObject = new MainWindow.SaveObject(sourcePath, destinationPath, nameText, numberOfBackups);
             mainWindow.PathList.Add(saveObject);
 
             await MainWindow.Serializer.SaveToFile();

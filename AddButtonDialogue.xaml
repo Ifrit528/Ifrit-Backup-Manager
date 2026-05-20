@@ -5,11 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Backup_Manager"
         mc:Ignorable="d"
-        Title="Select Source and Destination" Height="Auto" MaxHeight="250" Width="1000">
+        Title="Select Source and Destination" Height="Auto" MaxHeight="300" Width="1000">
     <Grid>
         <StackPanel>
             <TextBlock Text="Name" FontWeight="Bold"/>
             <TextBox Name="NameBox" Width="900" Height="30" TextWrapping="NoWrap" HorizontalAlignment="Left"/>
+            
+            <TextBlock Text="Number of Backups" FontWeight="Bold"/>
+            <TextBox Name="NumberOfBackups" Width="900" Height="30" TextWrapping="NoWrap" HorizontalAlignment="Left"/>
+            
             <TextBlock Text="Source" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal">
                 <TextBox Name="SourceResponseBox" Width="900" TextWrapping="NoWrap"/>

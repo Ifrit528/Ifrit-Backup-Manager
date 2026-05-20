@@ -33,16 +33,18 @@ namespace Backup_Manager
 
         public class SaveObject
         {
-            public SaveObject(string source, string destination, string name)
+            public SaveObject(string source, string destination, string name, string numberOfBackups="3")
             {
                 Source = source;
                 Destination = destination;
                 Name = name;
+                NumberOfBackups = numberOfBackups;
             }
 
             public string Source { get; set; }
             public string Destination { get; set; }
             public string Name { get; set; }
+            public string NumberOfBackups { get; set; }
 
             public string GetTime
             {
@@ -81,14 +83,53 @@ namespace Backup_Manager
 
         }
 
-        static void CopyDirectory(string source, string destination, bool recursive=true)
+        // Cycle directories down one
+        private static void CountDownDirectories(string directory, string sourceName, int numberOfBackups)
+        {
+            string baseName = Path.Combine(directory, sourceName);
+            Directory.Delete(baseName, true);
+
+            for (int i = 0; i < numberOfBackups; i++)
+            {
+                string oldName = baseName + $"({i})";
+                if (Directory.Exists(oldName))
+                {
+                    if (i == 1) { Directory.Move(oldName, baseName); }
+                    else { Directory.Move(oldName, baseName + $"({i-1})"); }
+                }
+            }
+        }
+
+        static void CopyDirectory(string source, string destination, int numberOfBackups, bool firstPass=true, bool recursive = true)
         {
             var sourceDir = new DirectoryInfo(source);
             var destinationDir = new DirectoryInfo(destination);
+            string saveDirName = sourceDir.Name;
 
-            //if (!sourceDir.Exists) { throw new DirectoryNotFoundException($"Source directory not found: {sourceDir.FullName}"); }
             if (!sourceDir.Exists) { MessageBox.Show($"Source directory not found: {sourceDir.FullName}"); return; }
             if (!destinationDir.Exists) { Directory.CreateDirectory(destinationDir.FullName); }
+
+            // Preserve source folder and maintain number of backups
+            if (firstPass)
+            {
+                var existingSources = Directory.GetDirectories(destinationDir.FullName, $"{sourceDir.Name}*");
+                int i = existingSources.Length;
+
+                while (Directory.Exists(Path.Combine(destination, saveDirName)))
+                {
+                    if (i > numberOfBackups - 1)
+                    {
+                        CountDownDirectories(destinationDir.FullName, sourceDir.Name, numberOfBackups);
+                        --i;
+                    }
+
+                    saveDirName = sourceDir.Name + $"({i})";
+                    ++i;
+                }
+
+                destinationDir.CreateSubdirectory(saveDirName);
+                destination = Path.Combine(destination, saveDirName);
+            }
 
             DirectoryInfo[] recursiveDirectories = sourceDir.GetDirectories();
 
@@ -103,7 +144,7 @@ namespace Backup_Manager
                 foreach (DirectoryInfo subDirectory in recursiveDirectories)
                 {
                     string newDirectory = Path.Combine(destination, subDirectory.Name);
-                    CopyDirectory(subDirectory.FullName, newDirectory);
+                    CopyDirectory(subDirectory.FullName, newDirectory, numberOfBackups, false);
                 }
             }
         }
@@ -112,8 +153,9 @@ namespace Backup_Manager
         {
             Button button = (Button)sender;
             SaveObject saveObject = (SaveObject)button.DataContext;
+            int numberOfBackups = Convert.ToInt32(saveObject.NumberOfBackups);
 
-            CopyDirectory(saveObject.Source, saveObject.Destination);
+            CopyDirectory(saveObject.Source, saveObject.Destination, numberOfBackups);
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
