@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
@@ -87,7 +86,8 @@ namespace Backup_Manager
             var sourceDir = new DirectoryInfo(source);
             var destinationDir = new DirectoryInfo(destination);
 
-            if (!sourceDir.Exists) { throw new DirectoryNotFoundException($"Source directory not found: {sourceDir.FullName}"); }
+            //if (!sourceDir.Exists) { throw new DirectoryNotFoundException($"Source directory not found: {sourceDir.FullName}"); }
+            if (!sourceDir.Exists) { MessageBox.Show($"Source directory not found: {sourceDir.FullName}"); return; }
             if (!destinationDir.Exists) { Directory.CreateDirectory(destinationDir.FullName); }
 
             DirectoryInfo[] recursiveDirectories = sourceDir.GetDirectories();
