@@ -151,7 +151,7 @@ namespace Backup_Manager
 
             for (int i = 0; i < PathList.Count; i++)
             {
-                if (PathList[i].Name == saveObject.Name && PathList[i].Source == saveObject.Source && PathList[0].Destination == saveObject.Destination)
+                if (PathList[i].Name == saveObject.Name && PathList[i].Source == saveObject.Source && PathList[i].Destination == saveObject.Destination)
                 {
                     index = i;
                     break;
