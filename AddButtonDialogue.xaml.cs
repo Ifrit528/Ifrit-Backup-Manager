@@ -12,10 +12,21 @@ namespace Backup_Manager
         string destinationPath;
         string nameText;
         string numberOfBackups;
+        int index = -1;
 
         public AddButtonDialogue()
         {
             InitializeComponent();
+        }
+
+        public AddButtonDialogue(MainWindow.SaveObject saveObject, int index)
+        {
+            InitializeComponent();
+            this.NameBox.Text = saveObject.Name;
+            this.NumberOfBackups.Text = saveObject.NumberOfBackups;
+            this.SourceResponseBox.Text = saveObject.Source;
+            this.DestinationResponseBox.Text = saveObject.Destination;
+            this.index = index;
         }
 
         public void SourceFolderDialogClick(object sender, RoutedEventArgs e)
@@ -67,7 +78,14 @@ namespace Backup_Manager
 
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
             MainWindow.SaveObject saveObject = new MainWindow.SaveObject(sourcePath, destinationPath, nameText, numberOfBackups);
-            mainWindow.PathList.Add(saveObject);
+            if (index >= 0)
+            {
+                mainWindow.PathList[index] = saveObject;
+            }
+            else
+            {
+                mainWindow.PathList.Add(saveObject);
+            }
 
             await MainWindow.Serializer.SaveToFile();
             this.Close();

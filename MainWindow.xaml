@@ -46,9 +46,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Click="Add_Click" Grid.Row="0" Background="Green" Content="Add" FontWeight="Bold" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"></Button>
-            <Button Click="Delete_Click" Grid.Row="0" Background="Red" Content="Delete" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"></Button>
+            <Button Click="Add_Click" Grid.Row="0" Background="Green" Foreground="Black" Content="Add" FontWeight="Bold" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Click="Edit_Click" Grid.Row="0" Background="Yellow" Foreground="Black" Content="Edit" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Click="Delete_Click" Grid.Row="0" Background="Red" Foreground="Black" Content="Delete" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
         <ListView Name="ListView1" ItemsSource="{Binding PathList, Mode=OneWay}" Background="#FF444444" Grid.Row="1">

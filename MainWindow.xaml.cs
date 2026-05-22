@@ -144,21 +144,28 @@ namespace Backup_Manager
             }
         }
 
-        private async void List_Button_Click(object sender, RoutedEventArgs e)
+        private static int ReturnIndexOf(SaveObject saveObject)
         {
-            Button button = (Button)sender;
-            SaveObject saveObject = (SaveObject)button.DataContext;
-            int numberOfBackups = Convert.ToInt32(saveObject.NumberOfBackups);
             int index = -1;
-            
+            var PathList = currentWindow.PathList;
+
             for (int i = 0; i < PathList.Count; i++)
             {
                 if (PathList[i].Name == saveObject.Name && PathList[i].Source == saveObject.Source && PathList[0].Destination == saveObject.Destination)
-                { 
+                {
                     index = i;
                     break;
                 }
             }
+            return index;
+        }
+
+        private async void List_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            SaveObject saveObject = (SaveObject)button.DataContext;
+            int numberOfBackups = Convert.ToInt32(saveObject.NumberOfBackups);            
+            int index = ReturnIndexOf(saveObject);
 
             if (index == -1) { MessageBox.Show("Error finding index."); return; }
 
@@ -190,6 +197,16 @@ namespace Backup_Manager
                 }
                 await Serializer.SaveToFile();
             }
+        }
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            SaveObject saveObject = (SaveObject)ListView1.SelectedItem;
+            int index = ReturnIndexOf(saveObject);
+            if (index == -1) { return; }
+            Window selectionWindow = new AddButtonDialogue(saveObject, index);
+            selectionWindow.Show();
         }
 
         private void Source_Click(object sender, RoutedEventArgs e)
