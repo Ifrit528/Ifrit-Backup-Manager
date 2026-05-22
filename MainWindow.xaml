@@ -8,22 +8,31 @@
         Title="Backup Manager" Height="450" Width="1000">
 
     <Window.Resources>
+        
+        <Style x:Key="HeaderStyle" TargetType="GridViewColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="TextBlockHover" TargetType="TextBlock">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Foreground" Value="Gold"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
         <DataTemplate x:Key="ListButton">
             <Button Content="Backup" Background="Green" Click="List_Button_Click" Margin="-10,0,0,0"/>
         </DataTemplate>
 
         <DataTemplate x:Key="SourceCell">
-            <TextBlock Width="300" MouseLeftButtonUp="Source_Click" Text="{Binding Source}"/>
+            <TextBlock Width="300" Text="{Binding Source}" MouseLeftButtonUp="Source_Click" Style="{StaticResource TextBlockHover}"/>
         </DataTemplate>
         
         <DataTemplate x:Key="DestinationCell">
-            <TextBlock Width="300" MouseLeftButtonUp="Destination_Click" Text="{Binding Destination}"/>
+            <TextBlock Width="300" Text="{Binding Destination}" MouseLeftButtonUp="Destination_Click" Style="{StaticResource TextBlockHover}"/>
         </DataTemplate>
 
-        <Style x:Key="HeaderStyle" TargetType="GridViewColumnHeader">
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        </Style>
     </Window.Resources>
 
 
