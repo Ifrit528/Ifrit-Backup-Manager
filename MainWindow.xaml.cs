@@ -40,20 +40,14 @@ namespace Backup_Manager
                 Destination = destination;
                 Name = name;
                 NumberOfBackups = numberOfBackups;
+                GetTime = System.DateTime.Now.ToString("g");
             }
 
             public string Source { get; set; }
             public string Destination { get; set; }
             public string Name { get; set; }
             public string NumberOfBackups { get; set; }
-
-            public string GetTime
-            {
-                get
-                {
-                    return System.DateTime.Now.ToString("g");
-                }
-            }
+            public string GetTime {  get; set; }
         }
 
         // File saving and reading
@@ -150,11 +144,27 @@ namespace Backup_Manager
             }
         }
 
-        private void List_Button_Click(object sender, RoutedEventArgs e)
+        private async void List_Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             SaveObject saveObject = (SaveObject)button.DataContext;
             int numberOfBackups = Convert.ToInt32(saveObject.NumberOfBackups);
+            int index = -1;
+            
+            for (int i = 0; i < PathList.Count; i++)
+            {
+                if (PathList[i].Name == saveObject.Name && PathList[i].Source == saveObject.Source && PathList[0].Destination == saveObject.Destination)
+                { 
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1) { MessageBox.Show("Error finding index."); return; }
+
+            PathList[index].GetTime = System.DateTime.Now.ToString("g");
+            await Serializer.SaveToFile();
+            this.ListView1.Items.Refresh();
 
             CopyDirectory(saveObject.Source, saveObject.Destination, numberOfBackups);
         }
