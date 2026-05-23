@@ -53,15 +53,30 @@
             <Button Click="Delete_Click" Grid.Row="0" Background="Red" Foreground="Black" Content="Delete" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
-        <ListView Name="ListView1" ItemsSource="{Binding PathList, Mode=OneWay}" Background="#FF444444" Grid.Row="1">
+        <Grid Name="InvisibleGrid" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"></ColumnDefinition>
+                <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                <ColumnDefinition Width="0.45*"></ColumnDefinition>
+                <ColumnDefinition Width="0.45*"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Name="width1"></Border>
+            <Border Grid.Column="1" Name="width2"></Border>
+            <Border Grid.Column="2" Name="width3"></Border>
+            <Border Grid.Column="3" Name="width4"></Border>
+            <Border Grid.Column="5" Name="width5"></Border>
+        </Grid>
+
+        <ListView Name="ListView1" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding PathList, Mode=OneWay}" Background="#FF444444" Grid.Row="1">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="" Width="Auto" CellTemplate="{StaticResource ListButton}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
-                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
-                        <GridViewColumn Header="Source" CellTemplate="{StaticResource SourceCell}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
-                        <GridViewColumn Header="Destination" CellTemplate="{StaticResource DestinationCell}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
-                        <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding GetTime}" Width="Auto" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
+                        <GridViewColumn Header="" CellTemplate="{StaticResource ListButton}" Width="{Binding ElementName=width1, Path=ActualWidth}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="{Binding ElementName=width2, Path=ActualWidth}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
+                        <GridViewColumn Header="Source" CellTemplate="{StaticResource SourceCell}" Width="{Binding ElementName=width3, Path=ActualWidth}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
+                        <GridViewColumn Header="Destination" CellTemplate="{StaticResource DestinationCell}" Width="{Binding ElementName=width4, Path=ActualWidth}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
+                        <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding GetTime}" Width="{Binding ElementName=width5, Path=ActualWidth}" HeaderContainerStyle="{StaticResource HeaderStyle}"/>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

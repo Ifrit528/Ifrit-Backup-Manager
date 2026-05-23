@@ -12,6 +12,8 @@ namespace Backup_Manager
     {
         static public readonly MainWindow currentWindow = (MainWindow)Application.Current.MainWindow;
         static public readonly string fileName = "paths.json";
+        public double screenWidth;
+        public double screenHeight;
 
         public MainWindow()
         {
@@ -22,6 +24,14 @@ namespace Backup_Manager
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
+            //screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
+            //this.Width = screenWidth * 0.45;
+            //this.Height = screenHeight * 0.4;
+            screenWidth = 1200;
+            screenHeight = 576;
+            this.Width = screenWidth;
+            this.Height = screenHeight;
             await Serializer.ReadSaveFile();
         }
 
