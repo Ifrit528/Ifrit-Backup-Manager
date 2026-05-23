@@ -26,11 +26,11 @@
         </DataTemplate>
 
         <DataTemplate x:Key="SourceCell">
-            <TextBlock Width="300" Text="{Binding Source}" HorizontalAlignment="Left" MouseLeftButtonUp="Source_Click" Style="{StaticResource TextBlockHover}"/>
+            <TextBlock Text="{Binding Source}" TextWrapping="NoWrap" HorizontalAlignment="Left" MouseLeftButtonUp="Source_Click" Style="{StaticResource TextBlockHover}"/>
         </DataTemplate>
         
         <DataTemplate x:Key="DestinationCell">
-            <TextBlock Width="300" Text="{Binding Destination}" HorizontalAlignment="Left" MouseLeftButtonUp="Destination_Click" Style="{StaticResource TextBlockHover}"/>
+            <TextBlock Text="{Binding Destination}" TextWrapping="NoWrap" HorizontalAlignment="Left" MouseLeftButtonUp="Destination_Click" Style="{StaticResource TextBlockHover}"/>
         </DataTemplate>
 
     </Window.Resources>
