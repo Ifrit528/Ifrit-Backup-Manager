@@ -6,4 +6,6 @@ Directory copying from one place to another in a GUI
 <br><br>
 Currently Windows only
 <br><br>
+Will overwrite folders with the same name as the folder being copied
+<br><br>
 <img width="590" height="426" alt="BackupManagerScreenshot" src="https://github.com/user-attachments/assets/6b9b41e3-268f-40f1-a5ea-4bd54f6fed22" />
