@@ -120,7 +120,7 @@ namespace Backup_Manager
                 var existingSources = Directory.GetDirectories(destinationDir.FullName, $"{sourceDir.Name}*");
                 int i = existingSources.Length;
 
-                while (Directory.Exists(Path.Combine(destination, saveDirName)))
+                while (numberOfBackups > 1 && Directory.Exists(Path.Combine(destination, saveDirName)))
                 {
                     if (i > numberOfBackups - 1)
                     {
@@ -132,6 +132,11 @@ namespace Backup_Manager
                     ++i;
                 }
 
+                if (numberOfBackups == 1)
+                {
+                    string name = Path.Combine(destination, saveDirName);
+                    if (Directory.Exists(name)) { Directory.Delete(name, true); }
+                }
                 destinationDir.CreateSubdirectory(saveDirName);
                 destination = Path.Combine(destination, saveDirName);
             }
